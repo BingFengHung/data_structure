@@ -139,5 +139,81 @@ class BinarySearchTree {
 		this.postOrder(node.right, arr); 
 		arr.push(node.key);
   }
+
+	min() {
+		let current = this.root
+		if (current) {
+			while (current && current.left !== null) {
+				current = current.left;
+			}
+
+			return current.key;
+		}
+
+		return null;
+	}
+
+	max() {
+		let current = this.root
+		if (current) {
+			while(current && current.right !== null) {
+				current = current.right;
+			}
+
+			return current.key;
+		}
+
+		return null;
+	}
+
+	search(key) {
+		return this.searchNode(this.root, key)
+	}
+
+	searchNode(node, key) {
+		if (node === null) return false;
+
+		if (key < node.key) {
+			return searchNode(node.left, key)
+		} else if (key > node.key) {
+			return searchNode(node.right, key)
+		} else {
+			return true;
+		}
+	}
+
+	remove(key) {
+		this.root = this.removeNode(this.root, key)
+	}
+
+	removeNode(node, key) {
+		if (node === null) return null;
+
+		if (key < node.key) {
+			node.left = this.removeNode(node.left, key)
+			return node;
+		} else if (key > node.key) {
+			node.right = removeNode(node.right, key)
+		} else {
+			if (node.left === null && node.right === null) {
+				node = null;
+				return node;
+			}
+
+			if (node.left === null) {
+				node = node.right;
+				return node;
+			} else if (node.right === null) {
+				node = node.left;
+				return node;
+			}
+
+			var aux = findMinNode(node.right)
+			node.key = aux.key;
+			node.right = removeNode(node.right, aux.key)
+			return node;
+		}
+	}
+
 }
 ```
