@@ -5,7 +5,7 @@
 
 `Hash Table` 透過 `hash function` 將 key 轉換成整數索引值，用這個索引值來找到記憶體中的值。
 
-![](2021-07-21-07-30-52.png)
+![](./Images/2021-07-21-07-30-52.png)
 
 - put(key, value)
 - remove(key)
@@ -30,7 +30,7 @@ class HashTable {
 		this.table[this.loseloseHashCode(key)] = undefined;
 	}
 
-	lostlostHashCode(key) {
+	loseloseHashCode(key) {
 		let hash = 0
 		for (let i = 0; i < key.length; i++) {
 			hash += key.charCodeAt(i);
@@ -41,4 +41,4 @@ class HashTable {
 ```
 
 使用 HashTable 通常會有碰撞的問題，
-最簡單的方式是當再加入時，發生碰撞，就在後面用二維振烈去儲存
+最簡單的方式是當再加入時，發生碰撞，就在後面用二維陣列去儲存
