@@ -76,13 +76,87 @@ class Graph {
 
 	removeVertex(vertex) {
 		while (this.adjList[vertex].length) {
-			const adjVertex = this.adjList[vertex].pop()
+			const adjVertex = this.adjList[vertex].pop();
 			this.removeEdge(vertex, adjVertex);
 		}
+
+		delete this.adjList[vertex];
 	};
 
 	depthFirstRecursive(start) {};
 	depthFirstIterative(start) {};
 	breadthFirst(start) {};
+}
+```
+
+## 廣度優先搜尋法
+以下是從頂點 v 開始的廣度優先搜尋法，步驟如下：
+- 1. 建立一個佇列 Q
+- 2. 將 v 標注為被發現的 (灰色)，並將 v 入佇列 Q
+- 3. 若 Q 非空，則運行以下步驟
+  - 將 u 從 Q 中取出
+	- 將標注 u 為被發現的 (灰色)
+	- 將 u 所有未被訪問過的鄰點 (白色) 入佇列
+	- 將 u 標佇為已被探索的 (黑色)
+
+```js
+var initializeColor = function() {
+	var color = []
+	for (let i = 0; i < vertices.length; i++) {
+		color[vertices[i]] = 'white'
+	}
+
+	return color;
+}
+
+bfs(v, callback) {
+	let color = initializeColor(),
+	    queue = new Queue();
+	queue.enqueue(v);
+
+	while(!queue.isEmpty()) {
+		let u = queue.dequeue(),
+		        neighbors = adjList.get(u);
+		color[u] = 'gray'
+		for(let i = 0; i < neightbors.length; i++) {
+			let w = neighbors[i]
+
+			if(color[w] === 'white')  {
+				color[w] = 'gray'
+				queue.enqueue(w)
+			}
+		}
+		color[u] = 'black';
+		if(callback) {
+			callback(u)
+		}
+	}
+}
+
+dfs(callback) {
+	let color = initializeColor();
+
+	for (let i = 0; i < vertices.length; i++) {
+		if (color[vertices[i]] === 'white') {
+			dfsVisit(vertices[i], color, callback);
+		}
+	}
+
+	var dfsVisit = function(u, color, callback) {
+		color[u] = 'gray';
+		if (callback) {
+			callback(u)
+		}
+
+		let neighbors = adjList.get(u);
+		for (let i = 0; i < neighbors.length; i++) {
+			let w = neighbors[i];
+
+			if (color[w] === 'white') {
+				dfsVisit(w, color, callback);
+			}
+		}
+		color[u] = 'black'
+	};
 }
 ```
