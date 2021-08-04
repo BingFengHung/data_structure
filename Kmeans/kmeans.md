@@ -27,7 +27,7 @@ let ky = Array(group).fill(0).map(() => Math.round(Math.random() * 500))
 
 // 計算兩點之間的距離
 function distance(x, y, kx, ky) {
-    return Math.sqrt(Math.pow(kx -x, 2) + (ky - y, 2))
+    return Math.sqrt(Math.pow(kx -x, 2) + Math.pow(ky - y, 2))
 }
 
 // 針對每筆資料分群
@@ -50,7 +50,6 @@ function cluster(x, y, kx, ky) {
         team[flag].push([x[i], y[i]])
 
         middle = Number.MAX_VALUE
-
     }
 
     return team
@@ -63,18 +62,18 @@ function clusterCenter(team, kx, ky) {
 
     let new_seed = []
 
-
     for(let i in team) {
         if (team[i].length === 0) {
             new_seed.push([kx[i], ky[i]])
         }
+        else {
+            for(let j of team[i]) {
+                sumx += j[0]
+                sumy += j[1]
+            }
 
-        for(let j of team[i]) {
-            sumx += j[0]
-            sumy += j[1]
+            new_seed.push([sumx/team[i].length, sumy/team[i].length])
         }
-
-        new_seed.push(sumx/team[i].length, sumy/team[i].length)
 
 
         sumx = 0
@@ -84,11 +83,11 @@ function clusterCenter(team, kx, ky) {
     let nkx = []
     let nky = []
 
-    for(let i of new_seed) {
+    for(let i of new_seed) { 
         nkx.push(i[0])
-        nkx.push(i[1])
+        nky.push(i[1])
     }
-
+    
     return [nkx, nky]
 }
 
@@ -114,16 +113,15 @@ function kmeans(x, y, kx, ky, fig) {
     }
 
     // 判斷群集中心是否不再變動
-    if (nkx == kx && nky == key) 
+    if (JSON.stringify(nkx) === JSON.stringify(kx) && JSON.stringify(nky) === JSON.stringify(ky)) 
     {
         return;
     }
     else {
         fig += 1
-        kmeans(x, y, nkx, nky);
+        kmeans(x, y, nkx, nky, fig);
     }
 }
 
 kmeans(x, y, kx, ky, 0)
-
 ```
